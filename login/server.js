@@ -13,4 +13,10 @@ app.listen(PORT, () => {
   res.json({ mensagem: 'Conexão funcionando!' });
 });
 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST']
+}));
+
+
 });
