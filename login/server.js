@@ -45,7 +45,7 @@ app.get('/usuarios', (req, res) => {
 });
 
 // Configuração do CORS específica (opcional)
-app.use(cors({
+app.use(({
   origin: 'http://localhost:3000',
   methods: ['GET', 'POST']
 }));
