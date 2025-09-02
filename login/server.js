@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = ;
+const PORT = 5000;
 
 // Rotas
 app.get('/teste', (req, res) => {
