@@ -4,29 +4,49 @@ import { Form, Button, Alert, Card } from 'react-bootstrap';
 function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [mensagem, setMensagem] = useState('');
+
+  // Estados separados para mensagens de sucesso e erro
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const resposta = await fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha })
-    });
-    const dados = await resposta.json();
-    if (resposta.ok) {
-      setMensagem('Login realizado com sucesso!');
-      setEmail('');
-      setSenha('');
-    } else {
-      setMensagem(dados.erro || 'Erro ao fazer login.');
+
+    // Limpa mensagens anteriores
+    setSuccessMsg('');
+    setErrorMsg('');
+
+    try {
+      const resposta = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+        setSuccessMsg('Login realizado com sucesso!');
+        setEmail('');
+        setSenha('');
+      } else {
+        setErrorMsg(dados.erro || 'Erro ao fazer login.');
+      }
+    } catch (error) {
+      setErrorMsg('Não foi possível conectar ao servidor.');
     }
   };
 
   return (
-    <Card className="mx-auto mt-5" style={{ maxWidth: 400 }}>
+    // Adicionamos a classe 'custom-card' para aplicar nossos novos estilos
+    <Card className="mx-auto mt-5 custom-card" style={{ maxWidth: 400 }}>
       <Card.Body>
-        <Card.Title className="mb-4 text-center">Login</Card.Title>
+        <Card.Title className="mb-4 text-center h2">Login</Card.Title>
+
+        {/* Mostra alerta de sucesso ou erro com as cores certas */}
+        {successMsg && <Alert variant="success">{successMsg}</Alert>}
+        {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email</Form.Label>
@@ -52,7 +72,6 @@ function Login() {
             Entrar
           </Button>
         </Form>
-        {mensagem && <Alert className="mt-3" variant="info">{mensagem}</Alert>}
       </Card.Body>
     </Card>
   );

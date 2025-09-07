@@ -28,3 +28,21 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--cor-primaria);
   border-color: var(--cor-primaria);
 }
+
+/* Estilos para os Cards de Login e Cadastro */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.custom-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: none;
+  animation: fadeIn 0.4s ease-in-out;
+}
