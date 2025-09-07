@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap');
+
+:root {
+  --cor-primaria: #0d6efd;
+  --cor-secundaria: #6c757d;
+  --cor-sucesso: #198754;
+  --cor-perigo: #dc3545;
+  --cor-fundo: #f8f9fa;
+  --cor-texto: #212529;
+  --cor-branco: #ffffff;
+
+  --fonte-principal: 'Roboto', sans-serif;
+  --fonte-titulos: 'Montserrat', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte-principal);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fonte-titulos);
+}
+
+.btn-primary {
+  background-color: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+}

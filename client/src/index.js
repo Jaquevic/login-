@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+// Importa o CSS do Bootstrap primeiro
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import './index.css'; // Removido pois o arquivo não existe
+
+// Importa o estilo personalizado
+import './index.css'; 
+
 import App from './App';
-// import reportWebVitals from './reportWebVitals'; // Removido pois o arquivo não existe
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -11,5 +15,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
-// Removido reportWebVitals();
