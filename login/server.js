@@ -2,18 +2,28 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST'],
+}));
 app.use(express.json());
 
 const PORT = 5000;
 
-// Rotas
+// Teste de conexão
 app.get('/teste', (req, res) => {
   res.json({ mensagem: 'Conexão funcionando!' });
 });
 
+// Banco de dados em memória
 let usuarios = [];
 
+// Rota GET informativa para /cadastro
+app.get('/cadastro', (req, res) => {
+  res.status(405).send('Use POST para cadastrar um usuário.');
+});
+
+// Cadastro de usuário
 app.post('/cadastro', (req, res) => {
   const { nome, email, senha } = req.body;
   if (!nome || !email || !senha) {
@@ -28,6 +38,7 @@ app.post('/cadastro', (req, res) => {
   return res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso!', usuario: novoUsuario });
 });
 
+// Login de usuário
 app.post('/login', (req, res) => {
   const { email, senha } = req.body;
   if (!email || !senha) {
@@ -40,17 +51,17 @@ app.post('/login', (req, res) => {
   return res.json({ mensagem: 'Login realizado com sucesso!', usuario });
 });
 
+// Listar usuários (apenas para teste)
 app.get('/usuarios', (req, res) => {
   return res.json(usuarios);
 });
 
-// Configuração do CORS específica (opcional)
-app.use(cors({
-  origin: 'http://localhost:3000',
-  methods: ['GET', 'POST']
-}));
+// Rota padrão para rotas não encontradas
+app.use((req, res) => {
+  res.status(404).json({ erro: 'Rota não encontrada.' });
+});
 
-// Iniciando servidor
+// Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
