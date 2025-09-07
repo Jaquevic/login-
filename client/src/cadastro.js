@@ -5,23 +5,45 @@ function Cadastro() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [mensagem, setMensagem] = useState('');
+  
+  // Estados separados para mensagens de sucesso e erro
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const resposta = await fetch('http://localhost:5000/cadastro', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, email, senha })
-    });
-    const dados = await resposta.json();
-    if (resposta.ok) {
-      setMensagem('Cadastro realizado com sucesso!');
-      setNome('');
-      setEmail('');
-      setSenha('');
-    } else {
-      setMensagem(dados.erro || 'Erro ao cadastrar.');
+    
+    // Limpa mensagens anteriores a cada tentativa
+    setErrorMsg('');
+    setSuccessMsg('');
+
+    // --- INÍCIO DA VALIDAÇÃO NO FRONT-END ---
+    if (senha.length < 8) {
+      setErrorMsg('A senha deve ter no mínimo 8 caracteres.');
+      return; // Impede o envio do formulário se a senha for inválida
+    }
+    // --- FIM DA VALIDAÇÃO ---
+
+    try {
+      const resposta = await fetch('http://localhost:5000/cadastro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, senha })
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+        setSuccessMsg('Cadastro realizado com sucesso!');
+        // Limpa os campos do formulário
+        setNome('');
+        setEmail('');
+        setSenha('');
+      } else {
+        setErrorMsg(dados.erro || 'Erro ao cadastrar. Tente novamente.');
+      }
+    } catch (error) {
+      setErrorMsg('Não foi possível conectar ao servidor. Verifique sua conexão.');
     }
   };
 
@@ -29,6 +51,11 @@ function Cadastro() {
     <Card className="mx-auto mt-5" style={{ maxWidth: 400 }}>
       <Card.Body>
         <Card.Title className="mb-4 text-center">Cadastro</Card.Title>
+        
+        {/* Mostra alerta de sucesso ou erro */}
+        {successMsg && <Alert variant="success">{successMsg}</Alert>}
+        {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formNome">
             <Form.Label>Nome</Form.Label>
@@ -40,6 +67,7 @@ function Cadastro() {
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="formEmail">
             <Form.Label>Email</Form.Label>
             <Form.Control
@@ -50,21 +78,23 @@ function Cadastro() {
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="formSenha">
             <Form.Label>Senha</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Digite sua senha"
+              placeholder="Mínimo 8 caracteres"
               value={senha}
               onChange={e => setSenha(e.target.value)}
               required
+              minLength="8" // Ajuda o navegador a validar também
             />
           </Form.Group>
+
           <Button variant="primary" type="submit" className="w-100">
             Cadastrar
           </Button>
         </Form>
-        {mensagem && <Alert className="mt-3" variant="info">{mensagem}</Alert>}
       </Card.Body>
     </Card>
   );
