@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Cadastro from './cadastro';
 import Login from './login';
+import Usuarios from './Usuarios'; // Importa o novo componente
 import { Container, Navbar, Nav } from 'react-bootstrap';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/login">Login</Nav.Link>
             <Nav.Link as={Link} to="/cadastro">Cadastro</Nav.Link>
+            <Nav.Link as={Link} to="/usuarios">Usuários</Nav.Link> 
           </Nav>
         </Container>
       </Navbar>
@@ -25,6 +27,7 @@ function App() {
           } />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/usuarios" element={<Usuarios />} /> 
         </Routes>
       </Container>
     </Router>
